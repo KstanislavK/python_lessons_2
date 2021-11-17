@@ -20,12 +20,14 @@
 а главная функция — общую сумму по вкладу на конец периода."""
 
 
-def count_total_amount(amount, period, rate):
+def count_total_amount(amount, period, rate, additional_amount):
+    add_count = (period - 2) * additional_amount
+    additional_sum = add_count * ((period-2) * rate) + add_count
     total_amount = amount * (period * rate) + amount
-    return total_amount
+    return total_amount + additional_sum
 
 
-def count_money(amount, period):
+def count_money(amount, period, additional_amount):
     rate_per_month = 0
     rate_6 = 0
     rate_12 = 0
@@ -52,7 +54,7 @@ def count_money(amount, period):
     elif period == 24:
         rate_per_month = rate_24 / 12
 
-    total_amount = count_total_amount(amount, period, rate_per_month)
+    total_amount = count_total_amount(amount, period, rate_per_month, additional_amount)
 
     money_dict = {
         'begin_sum': amount,
@@ -64,11 +66,11 @@ def count_money(amount, period):
     print(f'Конечная сумма: {total_amount}')
 
 
-
 def main():
     amount = int(input('Введите сумму вклада (от 1000): '))
     period = int(input('Введите срок вклада (6, 12, 24 месяцев): '))
-    count_money(amount, period)
+    additional_amount = int(input('Сколько будем докладывать: '))
+    count_money(amount, period, additional_amount)
 
 
 if __name__ == '__main__':
