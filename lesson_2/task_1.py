@@ -7,9 +7,9 @@
 
 
 class ItemDiscount:
-    def __init__(self, name, price):
-        self.name = name
-        self.price = price
+    def __init__(self):
+        self.name = 'good'
+        self.price = 300
 
 
 class ItemDiscountReport(ItemDiscount):
@@ -18,5 +18,5 @@ class ItemDiscountReport(ItemDiscount):
         print(self.name, self.price)
 
 
-item = ItemDiscountReport('good', 30)
+item = ItemDiscountReport()
 item.get_parent_data()
