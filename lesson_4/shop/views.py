@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 
 from .models import Goods
 
@@ -19,13 +20,14 @@ class GoodsListView(ListView):
         return context
 
 
-# def index(request):
-#     title = 'Все товары'
-#     goods = Goods.objects.all()
-#
-#     context = {
-#         'title': title,
-#         'objects': goods
-#     }
-#
-#     return render(request, 'shop/goods_list.html', context)
+class GoodCreateView(CreateView):
+    model = Goods
+    template_name = 'shop/good_create.html'
+    success_url = reverse_lazy('shop:index')
+    fields = '__all__'
+
+    def get_context_data(self):
+        context = super(GoodCreateView, self).get_context_data()
+        title = 'Добавить товар'
+        context.update({'title': title})
+        return context

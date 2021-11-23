@@ -9,6 +9,7 @@ class Goods(models.Model):
     vendor = models.CharField(max_length=128, blank=True, verbose_name='Поставщик')
 
     class Meta:
+        ordering = ('-arrive_date',)
         verbose_name_plural = 'Товары'
         verbose_name = 'Товар'
 
