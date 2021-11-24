@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th scope="col">Название</th>
+                <th scope="col">Категории</th>
                 <th scope="col">Дата постуления</th>
                 <th scope="col">Цена</th>
                 <th scope="col">Единица измерения</th>
@@ -18,6 +19,9 @@
             {% for item in objects %}
                 <tr>
                     <td scope="row">{{ item.name }}</td>
+                    <td>
+                        {% for cat in item.category.all %}<a href="{% url 'shop:index' cat.pk %}">{{ cat.name }}</a> {% endfor %}
+                    </td>
                     <td>{{ item.arrive_date }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.unit }}</td>
