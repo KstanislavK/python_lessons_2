@@ -22,7 +22,7 @@ from .models import Goods, Category
 class GoodCreateView(CreateView):
     model = Goods
     template_name = 'shop/good_create.html'
-    success_url = reverse_lazy('shop:index')
+    success_url = reverse_lazy('shop:index', kwargs={'pk': 0})
     fields = '__all__'
 
     def get_context_data(self):
