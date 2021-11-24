@@ -5,18 +5,20 @@ from django.views.generic import ListView, CreateView
 from .models import Goods, Category
 
 
-# class GoodsListView(ListView):
-#     model = Goods
-#     template_name = 'shop/goods_list.html'
-#     context_object_name = 'objects'
-#
-#     queryset = Goods.objects.prefetch_related('category').all()
-#
-#     def get_context_data(self, *args, **kwargs):
-#         context = super(GoodsListView, self).get_context_data(*args, **kwargs)
-#         title = 'Все товары'
-#         context.update({'title': title})
-#         return context
+class GoodsListView(ListView):
+    model = Goods
+    template_name = 'shop/goods_list.html'
+    context_object_name = 'objects'
+
+    queryset = Goods.objects.prefetch_related('category').all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(GoodsListView, self).get_context_data(*args, **kwargs)
+        title = 'Все товары'
+        categories = Category.objects.all()
+        context.update({'title': title})
+        context.update({'links_menu': categories})
+        return context
 
 
 class GoodCreateView(CreateView):
