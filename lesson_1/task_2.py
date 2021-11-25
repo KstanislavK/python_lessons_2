@@ -11,29 +11,15 @@ def print_directory_contents(sPath):
 import os
 
 
-def open_directory(path):
-    print('#' * 15)
-    print(f"Каталог: {path}\nВсе папки и файлы:")
-    os.chdir(path)
-    for item in os.listdir():
-        path = os.path.join(path, item)
-        print(path)
-        if os.path.isdir(path):
-            open_directory(path)
+def print_directory_contents(sPath):
+    struct = []
+    for file_or_directory in os.listdir(sPath):
+        full_name = os.path.join(os.path.abspath(sPath), file_or_directory)
+        if os.path.isfile(full_name):
+            struct.append((os.path.abspath(sPath), file_or_directory))
+        else:
+            struct.extend(print_directory_contents(full_name))
+    return struct
 
 
-def print_directory_contents(directory):
-    print(f"Каталог: {directory}\nВсе папки и файлы:")
-    for item in os.listdir():
-        path = os.path.join(directory, item)
-        print(path)
-        if os.path.isdir(path):
-            open_directory(path)
-
-
-def main():
-    print_directory_contents(os.getcwd())
-
-
-if __name__ == '__main__':
-    main()
+(print_directory_contents(os.getcwd()))

@@ -7,28 +7,17 @@
 Элементы строки (элементы таблицы умножения) должны разделяться табуляцией."""
 
 
-def create_table(lines_num, rows_num):
-    for i in range(1, lines_num + 1):
-        line = []
-
-        for k in range(1, rows_num + 1):
-            item = i * k
-            line.append(str(item))
-
-        line_string = "    ".join(line)
-
-        print(line_string)
-
-
-def main():
-    lines_num = int(input('First value: '))
-    rows_num = int(input('Second value: '))
-    create_table(lines_num, rows_num)
+def table(length, height):
+    for i in range(height + 1):
+        row = []
+        for j in range(length + 1):
+            if i == 0:
+                row.append(j)
+            elif j == 0:
+                row.append(i)
+            else:
+                row.append(i * j)
+        print('\t'.join([str(i) for i in row]))
 
 
-if __name__ == '__main__':
-    main()
-
-
-# line = lambda "\t".join(item): for item in line
-# line = lambda item:
+table(14, 5)

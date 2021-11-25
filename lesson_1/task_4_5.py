@@ -20,58 +20,49 @@
 а главная функция — общую сумму по вкладу на конец периода."""
 
 
-def count_total_amount(amount, period, rate, additional_amount):
-    add_count = (period - 2) * additional_amount
-    additional_sum = add_count * ((period-2) * rate) + add_count
-    total_amount = amount * (period * rate) + amount
-    return total_amount + additional_sum
+def get_percent(amount, months):
+    if months not in [6, 12, 24]:
+        return False
+
+    rates = (
+        {'begin_sum': 1000, 'end_sum': 10000, 6: 5, 12: 6, 24: 5},
+        {'begin_sum': 10000, 'end_sum': 100000, 6: 6, 12: 7, 24: 6.5},
+        {'begin_sum': 100000, 'end_sum': 1000000, 6: 7, 12: 8, 24: 7.5},
+    )
+
+    for rate in rates:
+        if rate['begin_sum'] <= amount < rate['end_sum']:
+            return rate[months]
+
+    return False
 
 
-def count_money(amount, period, additional_amount):
-    rate_per_month = 0
-    rate_6 = 0
-    rate_12 = 0
-    rate_24 = 0
+def deposit(amount, months):
+    percent = get_percent(amount, months)
+    if not percent:
+        print('Нет подходящего тарифа')
 
-    if 1000 <= amount <= 10000:
-        rate_6 = 0.05
-        rate_12 = 0.06
-        rate_24 = 0.05
+    total = amount
+    for month in range(months):
+        profit = total * percent / 100 / 12
+        total += profit
 
-    elif 10000 < amount <= 100000:
-        rate_6 = 0.06
-        rate_12 = 0.07
-        rate_24 = 0.065
-    elif amount > 10000:
-        rate_6 = 0.07
-        rate_12 = 0.08
-        rate_24 = 0.075
-
-    if period == 6:
-        rate_per_month = rate_6 / 12
-    elif period == 12:
-        rate_per_month = rate_12 / 12
-    elif period == 24:
-        rate_per_month = rate_24 / 12
-
-    total_amount = count_total_amount(amount, period, rate_per_month, additional_amount)
-
-    money_dict = {
-        'begin_sum': amount,
-        'end_sum': total_amount,
-        '6': rate_6,
-        '12': rate_12,
-        '24': rate_24
-    }
-    print(f'Конечная сумма: {total_amount}')
+    print(round(total, 2))
 
 
-def main():
-    amount = int(input('Введите сумму вклада (от 1000): '))
-    period = int(input('Введите срок вклада (6, 12, 24 месяцев): '))
-    additional_amount = int(input('Сколько будем докладывать: '))
-    count_money(amount, period, additional_amount)
+def chargable_deposit(amount, months, charge=0):
+    percent = get_percent(amount, months)
+    if not percent:
+        print('Нет подходящего тарифа')
+
+    total = amount
+    for month in range(months):
+        profit = total * percent / 100 / 12
+        total += profit
+        if month != 0 and month != months - 1:
+            total += charge + charge * percent / 100 / 12
+
+    print(round(total, 2))
 
 
-if __name__ == '__main__':
-    main()
+chargable_deposit(10000, 24, 100)
