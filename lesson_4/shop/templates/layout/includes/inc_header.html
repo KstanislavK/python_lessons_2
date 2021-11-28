@@ -1,0 +1,15 @@
+{% load static %}
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <a href="{% url 'shop:index' 0 %}" class="navbar-brand">Товары</a>
+        <a href="/admin" class="btn btn-outline-dark">Админка</a>
+        <a href="{% url 'shop:create_good' %}" class="btn btn-outline-primary">Добавить товар</a>
+    </nav>
+</div>
+<div class="container">
+    Тэги:
+    <a href="{% url 'shop:index' 0 %}">Все</a> :
+    {% for link in links_menu %}
+    <a href="{% url 'shop:index' link.pk %}">{{ link.name }}</a> :
+    {% endfor %}
+</div>
