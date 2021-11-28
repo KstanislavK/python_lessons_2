@@ -10,7 +10,7 @@ class GoodsListView(ListView):
     template_name = 'shop/goods_list.html'
     context_object_name = 'objects'
 
-    queryset = Goods.objects.prefetch_related('category').all()
+    queryset = Goods.objects.site_filter().prefetch_related('category').all()
 
     def get_context_data(self, *args, **kwargs):
         context = super(GoodsListView, self).get_context_data(*args, **kwargs)
@@ -18,6 +18,8 @@ class GoodsListView(ListView):
         categories = Category.objects.all()
         context.update({'title': title})
         context.update({'links_menu': categories})
+        context.update({'site': self.request.site})
+
         return context
 
 
@@ -35,17 +37,17 @@ class GoodCreateView(CreateView):
 
 
 def index(request, pk=None):
-    goods = Goods.objects.prefetch_related('category').all()
-    links_menu = Category.objects.all()
+    goods = Goods.objects.site_filter().prefetch_related('category').all()
+    links_menu = Category.objects.site_filter().site_filter().all()
 
     if pk is not None:
         if pk == 0:
-            goods = Goods.objects.prefetch_related('category').all()
+            goods = Goods.objects.site_filter().prefetch_related('category').all()
             category = {'name': 'Все', 'pk': 0}
             title = category['name']
         else:
             category = get_object_or_404(Category, pk=pk)
-            goods = Goods.objects.filter(category__pk=pk)
+            goods = Goods.objects.site_filter().filter(category__pk=pk)
             title = category.name
 
         context = {
