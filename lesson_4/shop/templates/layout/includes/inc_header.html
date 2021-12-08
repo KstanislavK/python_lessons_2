@@ -6,7 +6,7 @@
         <a href="{% url 'shop:create_good' %}" class="btn btn-outline-primary">Добавить товар</a>
     </nav>
 </div>
-<div class="container">
+<div class="container" id="tags">
     Тэги:
     <a href="{% url 'shop:index' 0 %}">Все</a> :
     {% for link in links_menu %}
